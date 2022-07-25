@@ -6,6 +6,8 @@ import css from '../../styles/Pizza.module.css'
 import LeftArrow from '../../assets/arrowLeft.png'
 import RightArrow from '../../assets/arrowRight.png'
 import { useState } from 'react'
+import { useStore } from '../../store/store';
+import toast, { Toaster} from 'react-hot-toast';
 export default function Pizza({ pizza }) {
 
     const src = urlFor(pizza.image).url()
@@ -13,13 +15,19 @@ export default function Pizza({ pizza }) {
     const [Quantity, setQuantity] = useState(1)
 
     const handleQuan = (type) => {
-        type === 'inc' 
-        ? setQuantity((prev) => prev + 1) 
-        : Quantity === 1 
-        ? null 
-        : setQuantity((prev) => prev - 1);
+        type === 'inc'
+            ? setQuantity((prev) => prev + 1)
+            : Quantity === 1
+                ? null
+                : setQuantity((prev) => prev - 1);
     };
 
+    // add  to cart function
+    const addPizza = useStore((state) => state.addPizza)
+    const addToCart = () => {
+        addPizza({ ...pizza, price: pizza.price[Size], quantity: Quantity, size: Size })
+        toast.success("Added to Cart")
+    }
     return (
         <Layout>
             <div className={css.container}>
@@ -66,7 +74,7 @@ export default function Pizza({ pizza }) {
                                 width={20}
                                 alt=""
                                 objectFit='contain'
-                                onClick={() =>handleQuan("dec")}
+                                onClick={() => handleQuan("dec")}
                             />
                             <span>{Quantity}</span>
 
@@ -75,16 +83,17 @@ export default function Pizza({ pizza }) {
                                 width={20}
                                 alt=""
                                 objectFit='contain'
-                                onClick={() =>handleQuan("inc")}
+                                onClick={() => handleQuan("inc")}
                             />
                         </div>
                     </div>
 
                     {/* Button */}
-                    <div className={`btn ${css.btn}`}>
+                    <div className={`btn ${css.btn}`} onClick={addToCart}>
                         Add to Cart
                     </div>
                 </div>
+                <Toaster />
             </div>
 
 
