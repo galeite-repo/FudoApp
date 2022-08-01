@@ -1,22 +1,31 @@
 
 import Layout from "../components/Layout";
 import Image from 'next/image';
-
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 import { useStore } from '../store/store';
-
 import css from '../styles/Cart.module.css'
 import { urlFor } from "../lib/client";
-import toast, { Toaster } from "react-hot-toast";
+import OrderModal from "../components/OrderModal";
+
 export default function Cart() {
     const CartData = useStore((state) => state.cart)
     const removePizza = useStore((state) => state.removePizza)
+    const [PaymentMethod, setPaymentMethod] = useState(null);
+
     const handleRemove = (i) => {
         removePizza(i);
         toast.error('Item removed')
     }
 
     const total = () => CartData.pizzas.reduce((a, b) => a + b.quantity * b.price, 0)
+
+    const handleOnDelivery = () => {
+        setPaymentMethod(0);
+        typeof window !== 'undefined' && localStorage.setItem('total', total());
+
+    }
     return (
         <Layout>
             <div className={css.container}>
@@ -45,8 +54,8 @@ export default function Cart() {
                                                 className={css.imageTd}
                                             >
                                                 <Image
-                                                   loader={() => src}
-                                                   src={src}
+                                                    loader={() => src}
+                                                    src={src}
 
                                                     alt=""
                                                     objectFit="cover"
@@ -97,13 +106,19 @@ export default function Cart() {
                         </div>
                     </div>
                     <div className={css.buttons}>
-                        <button className="btn">Pay on Delivery</button>
+                        <button className="btn" onClick={handleOnDelivery}>Pay on Delivery</button>
                         <button className="btn">Pay Now</button>
                     </div>
                 </div>
             </div>
 
             <Toaster />
+            {/* Modal */}
+            <OrderModal
+                opened={PaymentMethod === 0}
+                setOpened = {setPaymentMethod}
+                PaymentMethod = {PaymentMethod}
+            />
         </Layout>
     )
 

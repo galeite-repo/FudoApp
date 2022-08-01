@@ -9,7 +9,6 @@ export default function Header() {
 
     //state in terminal
     const state = useStore((state) => state)
-    console.log(state)
     const items = useStore((state) => state.cart.pizzas.length)
     return (
         <div className={css.header}>
