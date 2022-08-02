@@ -13,7 +13,9 @@ export default function Cart() {
     const CartData = useStore((state) => state.cart)
     const removePizza = useStore((state) => state.removePizza)
     const [PaymentMethod, setPaymentMethod] = useState(null);
-
+    const [Order, setOrder] = useState(
+        typeof window !== 'undefined' && localStorage.getItem('order')
+    );
     const handleRemove = (i) => {
         removePizza(i);
         toast.error('Item removed')
@@ -122,10 +124,13 @@ export default function Cart() {
                             <span>$ {total()}</span>
                         </div>
                     </div>
+                    {!Order && CartData.pizzas.length > 0  ? (
                     <div className={css.buttons}>
-                        <button className="btn" onClick={handleOnDelivery}>Pay on Delivery</button>
-                        <button className="btn" onClick={handleCheckout}>Pay Now</button>
-                    </div>
+                    <button className="btn" onClick={handleOnDelivery}>Pay on Delivery</button>
+                    <button className="btn" onClick={handleCheckout}>Pay Now</button>
+                </div>
+                    ): null}
+
                 </div>
             </div>
 
