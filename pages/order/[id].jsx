@@ -13,18 +13,24 @@ export const getServerSideProps = async ({ params }) => {
 
     return {
         props: {
-            order: order[0]
+            order: order[0],
         }
     }
 }
 
-export default function Orders({ order }) {
+export default function Orders({order}) {
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            if(order.status==4){
+                localStorage.clear();
+            }else{
+                window.location.reload()
+            }
+        }, 3000);
+    
+        return () => clearInterval(interval);
+      }, [order]);
 
-    useEffect(()=>{
-        if(order.status>3){
-            localStorage.clear();
-        }
-    },[order])
     return (
         <Layout>
             <div className={css.container}>

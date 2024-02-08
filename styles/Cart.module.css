@@ -66,6 +66,19 @@
 
 }
 
+.info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.info>p{
+    font-size: 0.6rem;
+}
+.info>span{
+    font-size: 0.5rem;
+}
+
 .buttons>:nth-child(1) {
     background-color: transparent;
     color: var(--themeRed);

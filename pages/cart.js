@@ -114,6 +114,12 @@ export default function Cart() {
               <span>$ {total()}</span>
             </div>
           </div>
+          <div className={css.info}>
+            <p>Card Info</p>
+            <span>
+              4242 4242 4242 4242 -  12/34 - Code: 567
+            </span>
+          </div>
           {!Order && CartData.pizzas.length > 0 ? (
             <div className={css.buttons}>
               <button className="btn" onClick={handleOnDelivery}>
